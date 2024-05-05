@@ -157,8 +157,8 @@ void LEDController::blinkLED() {
   // test de leds
 void LEDController::Leds_Test(void) {
   Serial.println("Leds_Test apagaTodo");
-  for (int j = 0;j< NUM_ARMS;j++) {
-    for (int i = 0; i < NUM_LEDS_PER_ARM; i++) {
+  for (int j = 0;j < NUM_ARMS;j++) {
+    for (int i = 0; i < 140; i++) {
       leds[i][j] = CHSV(0, 0, 0);
       FastLED.show();
       }
