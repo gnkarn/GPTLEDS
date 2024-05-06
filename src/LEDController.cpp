@@ -82,7 +82,7 @@ void LEDController::updateGPSStatus(bool has3DFix) {
 void LEDController::setLED(int arm, int index, CRGB color) {
   if (arm >= 0 && arm < NUM_ARMS && index >= 0 && index < NUM_LEDS_PER_ARM) {
     for (int i = 0; i < NUM_ARMS; i++) {
-      for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+      for (int j = 0; j < NUM_LEDS_PER_ARM; j++) {
         if (LED_DEF[i][j] == ARMED) {
           leds[i][j] = CHSV(0, 255, dim);
           }
@@ -111,7 +111,7 @@ void LEDController::default_mode(int STATUS, float dim1) {
 void LEDController::front_arms(int STATUS, float dim1) {
   if (STATUS == 1) {
     for (int i = 0; i < NUM_ARMS; i++) {
-      for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+      for (int j = 0; j < NUM_LEDS_PER_ARM; j++) {
         if (LED_DEF[i][j] == FRONT) {
           leds[i][j] = CHSV(96, 255, 255 * dim1);
           }
@@ -120,7 +120,7 @@ void LEDController::front_arms(int STATUS, float dim1) {
     }
   else {
     for (int i = 0; i < NUM_ARMS; i++) {
-      for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+      for (int j = 0; j < NUM_LEDS_PER_ARM; j++) {
         if (LED_DEF[i][j] == FRONT) {
           leds[i][j] = CHSV(0, 0, 0);
           }
@@ -162,17 +162,17 @@ void LEDController::Leds_Test(void) {
       leds[i][j] = CHSV(0, 0, 0);
       FastLED.show();
       }
-    for (int j = 0; j < 10; j++) {
+    for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CHSV(0, 0, j);
       FastLED.show();
       FastLED.delay(20);
       }
-    for (int j = 0; j < 10; j++) {
+    for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CHSV(0, j, 0);
       FastLED.show();
       FastLED.delay(20);
       }
-    for (int j = 0; j < 10; j++) {
+    for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CRGB(j, 0, 0);
       FastLED.show();
       FastLED.delay(20);

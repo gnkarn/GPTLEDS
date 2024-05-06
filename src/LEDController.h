@@ -9,7 +9,7 @@
 // #define LEDTYPE WS2812B
 #define LEDTYPE APA102
 #define NUM_ARMS 2 //4
-#define NUM_LEDS_PER_STRIP 7  // 10
+#define NUM_LEDS_PER_STRIP 140  // 10
 #define FRAMES_PER_SECOND 30
 #define NUM_LEDS_PER_ARM 10 // 10 , cambiar la definicion de  LED_DEF
 #define  NUM_LEDS  NUM_LEDS_PER_ARM * NUM_ARMS  // NUM_LEDS_PER_ARM * NUM_ARMS; // Number of LED's
@@ -36,7 +36,7 @@
 #define SIDE 5
 #define FLASH 6
 
-const byte LED_DEF[NUM_ARMS][NUM_LEDS_PER_STRIP] = {
+const byte LED_DEF[NUM_ARMS][NUM_LEDS_PER_ARM] = {
     {HB,GPS, FRONT, FRONT, FRONT, FRONT,FLASH},
     {HB,GPS, FRONT, FRONT, FRONT, FRONT,FLASH}
   };
