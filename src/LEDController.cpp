@@ -6,8 +6,8 @@ CRGB LEDController::leds[NUM_ARMS][NUM_LEDS_PER_STRIP];
 void LEDController::setup() {
   // Configurar el número de LEDs y el tipo de tira LED APA102
 
-  FastLED.addLeds<LEDTYPE, DATA_PIN, CLOCK_PIN, RGBORDER>(leds[0], NUM_LEDS); // wemos32
-  FastLED.addLeds<LEDTYPE, DATA_PIN2, CLOCK_PIN2, RGBORDER>(leds[1], NUM_LEDS); // wemos32
+  FastLED.addLeds<LEDTYPE, DATA_PIN, CLOCK_PIN, RGBORDER>(leds[0], 140); // wemos32
+  FastLED.addLeds<LEDTYPE, DATA_PIN2, CLOCK_PIN2, RGBORDER>(leds[1], 140); // wemos32
   // Ajustar el brillo de la tira LED (opcional)
   FastLED.setBrightness(100);
   }
@@ -178,7 +178,7 @@ void LEDController::Leds_Test(void) {
       FastLED.delay(20);
       }
     }
-  FastLED.clear(1);
+  FastLED.clear();
   FastLED.show();
   Serial.println("FIN Leds_Test");
   } // fin test de leds

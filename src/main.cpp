@@ -13,7 +13,7 @@ void setup() {
   Serial2.begin(57600, SERIAL_8N1, RXD2, TXD2);   // Initialise Serial2 port at 57600bps
   LEDController::setup(); // Inicializar la tira LED APA102
   Serial.print("Test leds");
-  LEDController::Leds_Test();
+  // LEDController::Leds_Test();
   Serial.print("Fin de Setup , inicio de Loop");
   delay(3000);
   }
