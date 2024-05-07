@@ -13,6 +13,7 @@ class MavlinkHandler {
   static bool messageReceived; // Variable para indicar si se ha recibido un mensaje
   static unsigned long lastMessageTime; // Variable para almacenar el tiempo del último mensaje recibido
   static const unsigned long TIMEOUT_MS; // Tiempo de espera en milisegundos antes de considerar que no se han recibido mensajes
+  static int ledState;
 
   static void processHeartbeat(mavlink_message_t message); // Función para procesar el mensaje de latido
   static void processGPSStatus(mavlink_message_t message); // Función para procesar el estado del GPS

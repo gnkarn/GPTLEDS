@@ -1,3 +1,6 @@
+// https://mavlink.io/en/messages/common.html#MAV_MODE_FLAG
+// 
+
 #ifndef MAVLINKINO_H
 #define MAVLINKINO_H
 

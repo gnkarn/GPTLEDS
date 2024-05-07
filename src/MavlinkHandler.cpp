@@ -2,6 +2,8 @@
 #include "LEDController.h"
 #include "Mavlink_ino.h" // Incluir Mavlink_ino.h aquí
 
+#define MAVLINK_DEBUG
+
 int G_flightMode = MANUAL;
 
 // Inicializar las variables estáticas en el ámbito de la clase
@@ -23,8 +25,36 @@ void MavlinkHandler::receiveMessages() {
 
 void MavlinkHandler::decodeMessage(mavlink_message_t message) {
   switch (message.msgid) {
-      case MAVLINK_MSG_ID_HEARTBEAT:
+      case MAVLINK_MSG_ID_HEARTBEAT: //  #0  https://mavlink.io/en/messages/common.html#HEARTBEAT
+        mavlink_heartbeat_t hb;
+       // mavlink_msg_heartbeat_decode(&msg, &hb);
         processHeartbeat(message);
+#ifdef MAVLINK_DEBUG
+        Serial.print("=HEARTBEAT");
+        Serial.print(" Type:");
+        Serial.print(hb.type);
+        Serial.print(" APclass:");
+        Serial.print(hb.autopilot);
+        Serial.print(" BaseMode:");
+        Serial.print(hb.base_mode);
+        if ((hb.base_mode == 1) || (hb.base_mode == 65))  // https://ardupilot.org/rover/docs/parameters.html#mode1
+          Serial.print(" DISarmed");
+        if ((hb.base_mode == 129) || (hb.base_mode == 193))
+          Serial.print(" !!ARMED!!");
+        Serial.print(" Custom/Flightmode:");
+        Serial.print(hb.custom_mode);
+        if (hb.custom_mode == 0)
+          Serial.print(" MANUAL");
+        if (hb.custom_mode == 4)
+          Serial.print(" HOLD");
+        if (hb.custom_mode == 10)
+          Serial.print(" !!AUTO!!");
+        Serial.print(" SysStat:");
+        Serial.print(hb.system_status);
+        Serial.print(" MavVer:");
+        Serial.print(hb.mavlink_version);
+
+#         endif
         break;
       case MAVLINK_MSG_ID_GPS_STATUS:
         processGPSStatus(message);
@@ -33,6 +63,13 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         processSysStatus(message);
         break;
       // Agregar más casos según sea necesario para otros tipos de mensajes MAVLink
+
+    // Some more actions to execute to show loop() is running...
+    // Non blocking LED toggler
+        if ((millis() % 2000) > 1000) ledState = 1;
+        else                         ledState = 0;
+        digitalWrite(LED_BUILTIN, ledState);
+
     }
   }
 
@@ -42,7 +79,7 @@ void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
      // Actualizar la variable messageReceived cuando se recibe un mensaje
   MavlinkHandler::messageReceived = true;
   static bool heartbeatState = false;
-  
+
   if (messageReceived) {
     heartbeatState = false;
     static unsigned long lastHeartbeatTime = 0;
