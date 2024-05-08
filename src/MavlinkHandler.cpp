@@ -27,6 +27,7 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
   switch (message.msgid) {
       case MAVLINK_MSG_ID_HEARTBEAT: //  #0  https://mavlink.io/en/messages/common.html#HEARTBEAT
         mavlink_heartbeat_t hb;
+        static int ledState;
       // mavlink_msg_heartbeat_decode(&msg, &hb);
         processHeartbeat(message);
             // Some more actions to execute to show loop() is running...
