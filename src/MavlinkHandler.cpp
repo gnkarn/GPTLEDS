@@ -27,8 +27,14 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
   switch (message.msgid) {
       case MAVLINK_MSG_ID_HEARTBEAT: //  #0  https://mavlink.io/en/messages/common.html#HEARTBEAT
         mavlink_heartbeat_t hb;
-       // mavlink_msg_heartbeat_decode(&msg, &hb);
+      // mavlink_msg_heartbeat_decode(&msg, &hb);
         processHeartbeat(message);
+            // Some more actions to execute to show loop() is running...
+      // Non blocking LED toggler
+        if ((millis() % 2000) > 1000) ledState = 1;
+        else                         ledState = 0;
+        digitalWrite(LED_BUILTIN, ledState);
+
 #ifdef MAVLINK_DEBUG
         Serial.print("=HEARTBEAT");
         Serial.print(" Type:");
@@ -54,7 +60,7 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         Serial.print(" MavVer:");
         Serial.print(hb.mavlink_version);
 
-#         endif
+#endif
         break;
       case MAVLINK_MSG_ID_GPS_STATUS:
         processGPSStatus(message);
@@ -64,11 +70,7 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         break;
       // Agregar más casos según sea necesario para otros tipos de mensajes MAVLink
 
-    // Some more actions to execute to show loop() is running...
-    // Non blocking LED toggler
-        if ((millis() % 2000) > 1000) ledState = 1;
-        else                         ledState = 0;
-        digitalWrite(LED_BUILTIN, ledState);
+
 
     }
   }
