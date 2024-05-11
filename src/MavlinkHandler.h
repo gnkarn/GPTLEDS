@@ -10,7 +10,7 @@
 #include <LEDController.h>
 #endif
 
-
+extern bool MavLink_Connected ;  // Connected or Not
 
 class MavlinkHandler {
 

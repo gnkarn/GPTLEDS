@@ -31,6 +31,7 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
       case MAVLINK_MSG_ID_HEARTBEAT: //  #0  https://mavlink.io/en/messages/common.html#HEARTBEAT
         mavlink_heartbeat_t hb;
         static int ledState;
+        MavLink_Connected = 1;
       // mavlink_msg_heartbeat_decode(&msg, &hb);
         processHeartbeat(message);
             // Some more actions to execute to show loop() is running...
@@ -63,7 +64,6 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         Serial.print(hb.system_status);
         Serial.print(" MavVer:");
         Serial.print(hb.mavlink_version);
-
 #endif
         break;
       case MAVLINK_MSG_ID_GPS_STATUS:
@@ -93,6 +93,7 @@ void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
     if (currentTime - lastHeartbeatTime >= 500) {
       heartbeatState = !heartbeatState;
       lastHeartbeatTime = currentTime;
+      MavLink_Connected = heartbeatState; // Estas dos variables funcioinan igual , ver de eliminar una
       }
     if (heartbeatState) {
       LEDController::setLED(0, 0, CRGB::White);// 
@@ -103,6 +104,7 @@ void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
   if (millis() - lastMessageTime > TIMEOUT_MS) {
     messageReceived = false;
     heartbeatState = false;
+    MavLink_Connected = heartbeatState;
     }
   mavlink_heartbeat_t heartbeat;
   mavlink_msg_heartbeat_decode(&message, &heartbeat);

@@ -9,6 +9,7 @@
 #define RXD2 16  // para serial 2 en wemos 32 
 #define TXD2 17
 
+bool MavLink_Connected = 0;
 
 
 void setup() {
@@ -27,4 +28,5 @@ void loop() {
   MavlinkHandler::receiveMessages(); // Recibir mensajes MAVLink
   LEDController::updateFlightMode(G_flightMode); // Actualizar el estado del modo de vuelo en la tira LED
   LEDController::get_gps_status(ON, 200);
+  LEDController::updateHeartbeat(MavLink_Connected);  // Connected or Not);
   }
