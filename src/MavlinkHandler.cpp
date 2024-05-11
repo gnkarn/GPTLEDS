@@ -6,6 +6,9 @@
 
 int G_flightMode = MANUAL;
 
+
+
+
 // Inicializar las variables estáticas en el ámbito de la clase
 bool MavlinkHandler::messageReceived = false;
 unsigned long MavlinkHandler::lastMessageTime = 0;
@@ -32,7 +35,7 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         processHeartbeat(message);
             // Some more actions to execute to show loop() is running...
       // Non blocking LED toggler
-        if ((millis() % 2000) > 1000) ledState = 1;
+        if ((millis() % 2000) > 500) ledState = 1;
         else                         ledState = 0;
         digitalWrite(LED_BUILTIN, ledState);
 
@@ -107,10 +110,17 @@ void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
   G_flightMode = heartbeat.custom_mode;
   }
 
+
+
+// **** MAVLINK Message #24 - GPS_RAW_INT ***
+
 void MavlinkHandler::processGPSStatus(mavlink_message_t message) {
   mavlink_gps_raw_int_t gpsRaw;
   mavlink_msg_gps_raw_int_decode(&message, &gpsRaw);
   // Verificar si hay una señal 3Dfix
+  ap_fixtype = mavlink_msg_gps_raw_int_get_fix_type(&message);  // 0 = No GPS, 1 =No Fix, 2 = 2D Fix, 3 = 3D Fix, 4 = DGPS, 5 = RTK
+  ap_sat_visible = mavlink_msg_gps_raw_int_get_satellites_visible(&message);          // numbers of visible satelites
+
   bool has3DFix = (gpsRaw.fix_type == 3);
   // Actualizar los LEDs correspondientes para indicar si hay señal 3Dfix
   if (has3DFix) {
@@ -121,6 +131,22 @@ void MavlinkHandler::processGPSStatus(mavlink_message_t message) {
     LEDController::setLED(0, 2, CRGB::Black); // Apagar LED 2 - Ala izquierda
     LEDController::setLED(1, 2, CRGB::Black); // Apagar LED 2 - Ala derecha
     }
+#ifdef DEBUG_APM_GPS_RAW
+  debugSerial.print(millis());
+  debugSerial.print("\tMAVLINK_MSG_ID_GPS_RAW_INT: fixtype: ");
+  debugSerial.print(ap_fixtype);
+  debugSerial.print(", visiblesats: ");
+  debugSerial.print(ap_sat_visible);
+  debugSerial.print(", status: ");
+  debugSerial.print(gps_status);
+  //debugSerial.print(", gpsspeed: ");
+  //debugSerial.print(mavlink_msg_gps_raw_int_get_vel(&msg)/100.0);
+  //debugSerial.print(", hdop: ");
+  //debugSerial.print(mavlink_msg_gps_raw_int_get_eph(&msg)/100.0);
+  //debugSerial.print(", alt: ");
+  //debugSerial.print(mavlink_msg_gps_raw_int_get_alt(&msg));
+  debugSerial.println();
+#endif
   }
 
 void MavlinkHandler::processSysStatus(mavlink_message_t message) {

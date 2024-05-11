@@ -31,15 +31,6 @@ extern uint8_t ap_system_status;
 
 
 
-/*
- * *******************************************************
- * *** Message #24  GPS_RAW_INT                        ***
- * *******************************************************
- */
-extern uint8_t ap_fixtype;  // 0 = No GPS, 1 = No Fix, 2 = 2D Fix, 3 = 3D Fix, 4 = DGPS, 5 = RTK.
-    // Some applications will not use the value of this field unless it is
-    // at least two, so always correctly fill in the fix.
-extern uint8_t ap_sat_visible;  // Number of visible Satelites
 
 #endif 
 

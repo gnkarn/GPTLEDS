@@ -3,6 +3,15 @@
 float dim = 100;  // variable global para dim
 CRGB LEDController::leds[NUM_ARMS][NUM_LEDS_PER_STRIP];
 
+ uint8_t ap_sat_visible;  // Number of visible Satelites
+ int state_GPS;
+ int state_FLASH;
+ unsigned long currentmillis;       // current milliseconds
+ unsigned long lastmillis;          // milliseconds of last loop
+ unsigned long targetmillis_FLASH;  // target milliseconds
+ unsigned long targetmillis_GPS;
+ uint8_t ap_fixtype;
+
 void LEDController::setup() {
   // Configurar el número de LEDs y el tipo de tira LED APA102
 
@@ -182,3 +191,80 @@ void LEDController::Leds_Test(void) {
   FastLED.show();
   Serial.println("FIN Leds_Test");
   } // fin test de leds
+
+  // #####################################################################################################
+  // ### GET GPS STATUS FROM ARDUPILOT AND PRINT CORESPONDING LED(s) ###
+  // #####################################################################################################
+void LEDController::get_gps_status(int STATUS, float dim) {
+  /* from MavLink_FrSkySPort.ino
+   *  ap_sat_visible  => numbers of visible satellites
+   *  ap_fixtype    => 0 = No GPS, 1 = No Fix, 2 = 2D Fix, 3 = 3D Fix
+   */
+
+  CRGB COLOR;
+  int FREQ;
+  if (STATUS == 1) {
+    // Serial.print(ap_fixtype);
+    switch (ap_fixtype) {
+        case NO_GPS:  // blink red
+          COLOR = CHSV(0, 255, dim);
+          FREQ = 750;
+          break;
+        case NO_FIX:  // blink orange
+          COLOR = CHSV(39, 255, dim);
+          FREQ = 600;
+          break;
+        case GPS_OK_FIX_2D:  // blue
+          COLOR = CHSV(160, 255, dim);
+          FREQ = 500;
+          break;
+        case GPS_OK_FIX_3D:  // const blue
+          COLOR = CHSV(160, 255, dim);
+          FREQ = 0;
+          state_GPS = 0;
+          break;
+        case GPS_OK_FIX_3D_DGPS:  // const blue
+          COLOR = CHSV(160, 255, dim);
+          FREQ = 0;
+          state_GPS = 0;
+          break;
+        default:  // off
+          COLOR = CHSV(0, 0, 0);
+          FREQ = 0;
+      }
+    if (currentmillis >= targetmillis_GPS) {
+      if (state_GPS == 0) {
+        for (int i = 0; i < NUM_ARMS; i++) {
+          for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+            if (LED_DEF[i][j] == GPS) {
+              leds[i][j] = COLOR;
+              }
+            }
+          }
+        state_GPS = 1;
+        }
+      else {
+        for (int i = 0; i < NUM_ARMS; i++) {
+          for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+            if (LED_DEF[i][j] == GPS) {
+              leds[i][j] = CHSV(0, 0, 0);
+              }
+            }
+          }
+        state_GPS = 0;
+        }
+      targetmillis_GPS = lastmillis + FREQ;
+      }
+    }
+  else {
+    for (int i = 0; i < NUM_ARMS; i++) {
+      for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+        if (LED_DEF[i][j] == GPS) {
+          leds[i][j] = CHSV(0, 0, 0);
+          }
+        }
+      }
+    }
+  }
+
+

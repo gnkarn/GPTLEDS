@@ -1,11 +1,14 @@
 #include <Arduino.h>
 // #include <stdint.h>
+
+
 #include "MavlinkHandler.h"
 #include "LEDController.h"
 // #include <modes.h>
 
 #define RXD2 16  // para serial 2 en wemos 32 
 #define TXD2 17
+
 
 
 void setup() {
@@ -23,4 +26,5 @@ void setup() {
 void loop() {
   MavlinkHandler::receiveMessages(); // Recibir mensajes MAVLink
   LEDController::updateFlightMode(G_flightMode); // Actualizar el estado del modo de vuelo en la tira LED
+  LEDController::get_gps_status(ON, 200);
   }

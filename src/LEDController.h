@@ -41,6 +41,43 @@ const byte LED_DEF[NUM_ARMS][NUM_LEDS_PER_ARM] = {
     {HB,GPS, FRONT, FRONT, FRONT, FRONT,FLASH}
   };
 
+/*
+ * *******************************************************
+ * *** Message #24  GPS_RAW_INT                        ***
+ * *******************************************************
+ */
+
+  // Some applications will not use the value of this field unless it is
+  // at least two, so always correctly fill in the fix.
+extern uint8_t ap_sat_visible;  // Number of visible Satelites
+extern int state_GPS;
+extern int state_FLASH;
+extern unsigned long currentmillis;       // current milliseconds
+extern unsigned long lastmillis;          // milliseconds of last loop
+extern unsigned long targetmillis_FLASH;  // target milliseconds
+extern unsigned long targetmillis_GPS;
+
+// #####################################################################################################
+// ### DEFAULT VARIABLES ###
+// #####################################################################################################
+// antes en led_control.ino
+#define RIGHT 0
+#define LEFT 1
+#define OFF 0
+#define ON 1
+#define AUTO 2
+#define BLINK 3
+
+/// GPS status codes
+enum GPS_Status {
+  NO_GPS = 0,              ///< No GPS connected/detected
+  NO_FIX = 1,              ///< Receiving valid GPS messages but no lock
+  GPS_OK_FIX_2D = 2,       ///< Receiving valid messages and 2D lock
+  GPS_OK_FIX_3D = 3,       ///< Receiving valid messages and 3D lock
+  GPS_OK_FIX_3D_DGPS = 4,  ///< Receiving valid messages and 3D lock with ///< differential improvements
+  GPS_OK_FIX_3D_RTK = 5,   ///< Receiving valid messages and 3D lock, with ///< relative-positioning improvements
+  };
+extern uint8_t ap_fixtype;  // 0 = No GPS, 1 = No Fix, 2 = 2D Fix, 3 = 3D Fix, 4 = DGPS, 5 = RTK.
 
 class LEDController {
   public:
@@ -53,6 +90,7 @@ class LEDController {
   static void front_arms(int STATUS, float dim1);
   static void Leds_Test(void);
   static void blinkLED();
+  static void get_gps_status(int STATUS, float dim);
 
   //rear_arms(STATUS, dim);
   //flash_pos_light(STATUS, dim);
@@ -60,6 +98,7 @@ class LEDController {
   // get_gps_status(ON, dim);
   private:
   static CRGB leds[NUM_ARMS][NUM_LEDS_PER_STRIP]; // Arreglo para almacenar los LEDs
+
 
   };
 

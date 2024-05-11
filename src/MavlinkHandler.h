@@ -6,6 +6,11 @@
 #include <GCS_MAVLink.h> 
 #include <Mavlink_ino.h>
 
+#ifndef LEDCONTROLLER_H
+#include <LEDController.h>
+#endif
+
+
 
 class MavlinkHandler {
 
@@ -18,6 +23,7 @@ class MavlinkHandler {
   static void processHeartbeat(mavlink_message_t message); // Función para procesar el mensaje de latido
   static void processGPSStatus(mavlink_message_t message); // Función para procesar el estado del GPS
   static void processSysStatus(mavlink_message_t message); // Función para procesar el estado del sistema
+
       // Otras declaraciones de funciones y variables...
   public:
   static void receiveMessages(); // Función para recibir mensajes MAVLink
