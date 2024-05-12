@@ -74,8 +74,12 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         break;
       // Agregar más casos según sea necesario para otros tipos de mensajes MAVLink
 
-
-
+    }
+  // Restablecer el estado de messageReceived después de un cierto tiempo sin recibir mensajes
+// Por ejemplo, si no se recibe ningún mensaje durante 1 segundo, se restablece messageReceived a false
+  if (millis() - lastMessageTime > TIMEOUT_MS) {
+    messageReceived = false;
+    MavLink_Connected = false;
     }
   }
 
@@ -99,13 +103,7 @@ void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
       LEDController::setLED(0, 0, CRGB::White);// 
       }
     }
-// Restablecer el estado de messageReceived después de un cierto tiempo sin recibir mensajes
-// Por ejemplo, si no se recibe ningún mensaje durante 1 segundo, se restablece messageReceived a false
-  if (millis() - lastMessageTime > TIMEOUT_MS) {
-    messageReceived = false;
-    heartbeatState = false;
-    MavLink_Connected = heartbeatState;
-    }
+  heartbeatState = false;//   ver
   mavlink_heartbeat_t heartbeat;
   mavlink_msg_heartbeat_decode(&message, &heartbeat);
   // Aquí puedes actualizar la variable flightMode con el estado del modo de vuelo leído del mensaje heartbeat
