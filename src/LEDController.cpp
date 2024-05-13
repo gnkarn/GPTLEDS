@@ -40,20 +40,20 @@ void LEDController::updateHeartbeat(bool mavlinkConnected) {
       lastHeartbeatTime = currentTime;
       }
     if (heartbeatState) {
-      leds[0][0] = CRGB::White; // LED 0 - Ala izquierda
-      leds[1][0] = CRGB::White; // LED 0 - Ala izquierda
+      //leds[0][0] = CRGB::White; // LED 0 - Ala izquierda
+      //leds[1][0] = CRGB::White; // LED 0 - Ala izquierda
       }
     else {
-      leds[0][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
-      leds[1][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
+      //leds[0][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
+     // leds[1][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
       }
     }
   else {
     // Si no hay comunicación, detener el parpadeo del LED
     stopBlinking(0, 0);
 
-    leds[0][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
-    leds[1][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
+    //leds[0][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
+    //leds[1][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
     }
 
     // Mostrar los cambios en la tira LED
