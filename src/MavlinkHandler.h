@@ -2,6 +2,9 @@
 #define MAVLINKHANDLER_H
 
 #include <Arduino.h>
+
+
+
 // #include <mavlink.h>
 #include <GCS_MAVLink.h> 
 #include <Mavlink_ino.h>
@@ -28,7 +31,7 @@ class MavlinkHandler {
   public:
   static void receiveMessages(); // Función para recibir mensajes MAVLink
   static void decodeMessage(mavlink_message_t message); // Función para decodificar mensajes MAVLink
-  
+
   static unsigned long lastCommunicationTime; // Declaración de la variable lastCommunicationTime
   };
 

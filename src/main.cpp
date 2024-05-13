@@ -1,4 +1,5 @@
 #include <Arduino.h>
+
 // #include <stdint.h>
 // Version 0.1
 // 
@@ -39,5 +40,5 @@ void loop() {
  // Continuar el parpadeo del LED
     LEDController::updateHeartbeat(MavLink_Connected);
     }
-  
+
   }
