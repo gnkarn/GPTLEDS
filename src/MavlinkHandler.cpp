@@ -14,15 +14,29 @@ bool MavlinkHandler::messageReceived = false;
 unsigned long MavlinkHandler::lastMessageTime = 0;
 const unsigned long MavlinkHandler::TIMEOUT_MS = 5000; // Tiempo de espera predeterminado de 5 segundos
 
+unsigned long MavlinkHandler::lastCommunicationTime = 0; // Definición de la variable lastCommunicationTime
 
 void MavlinkHandler::receiveMessages() {
+  bool messageReceived = false; // Variable para indicar si se ha recibido un mensaje
   while (Serial2.available() > 0) {
     uint8_t byte = Serial2.read();
     mavlink_message_t message;
     mavlink_status_t status;
     if (mavlink_parse_char(MAVLINK_COMM_0, byte, &message, &status)) {
+      messageReceived = true; // Indicar que se ha recibido un mensaje
       decodeMessage(message);
       }
+    }
+    // Actualizar el tiempo de la última comunicación recibida
+  if (messageReceived) {
+    lastCommunicationTime = millis();
+    }
+
+  
+    // Verificar si no se ha recibido ningún mensaje durante más de 5 segundos
+  if (!messageReceived && millis() - lastCommunicationTime > 5000) {
+    // Detener el parpadeo del LED
+    LEDController::stopBlinking(0, 0);
     }
   }
 

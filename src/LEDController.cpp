@@ -12,7 +12,13 @@ CRGB LEDController::leds[NUM_ARMS][NUM_LEDS_PER_STRIP];
  unsigned long targetmillis_GPS;
  uint8_t ap_fixtype;
 
-void LEDController::setup() {
+
+ bool isBlinking = false; // Variable de estado para indicar si el LED está parpadeando
+ unsigned long previousMillis = 0; // Variable para almacenar el tiempo anterior del parpadeo
+ int ledState = LOW; // Definición de la variable ledState
+
+ 
+ void LEDController::setup() {
   // Configurar el número de LEDs y el tipo de tira LED APA102
 
   FastLED.addLeds<LEDTYPE, DATA_PIN, CLOCK_PIN, RGBORDER>(leds[0], 140); // wemos32
@@ -24,6 +30,8 @@ void LEDController::setup() {
 void LEDController::updateHeartbeat(bool mavlinkConnected) {
   // Si Mavlink está conectado, hacer que el LED de heartbeat titile una vez por segundo
   if (mavlinkConnected) {
+    startBlinking(0, 0);
+
     static bool heartbeatState = false;
     static unsigned long lastHeartbeatTime = 0;
     unsigned long currentTime = millis();
@@ -41,6 +49,9 @@ void LEDController::updateHeartbeat(bool mavlinkConnected) {
       }
     }
   else {
+    // Si no hay comunicación, detener el parpadeo del LED
+    stopBlinking(0, 0);
+
     leds[0][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
     leds[1][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
     }
@@ -268,3 +279,38 @@ void LEDController::get_gps_status(int STATUS, float dim) {
   }
 
 
+//  para blink 
+
+void LEDController::startBlinking(int row, int col) {
+  // Iniciar el parpadeo del LED si no está parpadeando
+  if (!isBlinking) {
+    isBlinking = true;
+    previousMillis = millis(); // Reiniciar el tiempo anterior del parpadeo
+    }
+
+    // Llamar a la función blinkLED para mantener el parpadeo
+  blinkLED(row, col, 250, 750); // Parpadeo de 250 ms en ON y 750 ms en OFF
+  }
+
+void LEDController::stopBlinking(int row, int col) {
+  // Detener el parpadeo del LED
+  isBlinking = false;
+  // Lógica adicional si es necesario para asegurar que el LED esté apagado
+  leds[0][0] = CRGB::Black;  //  cambiar detectando los leds de la funcion HB 
+  }
+
+void LEDController::blinkLED(int row, int col, unsigned long onDuration, unsigned long offDuration) {
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= (isBlinking ? (ledState == LOW ? offDuration : onDuration) : 0)) {
+    previousMillis = currentMillis;
+
+    // Cambiar el estado del LED solo si está parpadeando
+    if (isBlinking) {
+      ledState = (ledState == LOW) ? HIGH : LOW;
+
+      // Escribir el estado del LED
+      leds[0][0] = (ledState == LOW) ? CRGB::Black : CRGB::White; //  cambiar detectando los leds de la funcion HB 
+      }
+    }
+  }

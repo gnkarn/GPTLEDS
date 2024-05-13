@@ -1,7 +1,7 @@
 #include <Arduino.h>
 // #include <stdint.h>
 // Version 0.1
-
+// 
 #include "MavlinkHandler.h"
 #include "LEDController.h"
 // #include <modes.h>
@@ -10,7 +10,8 @@
 #define TXD2 17
 
 bool MavLink_Connected = 0;
-
+bool test;
+unsigned long lastCommunicationTime = 0; // Variable para almacenar el tiempo de la última comunicación recibida
 
 void setup() {
   Serial.println("Setup de arduplane leds iniciado ");
@@ -29,4 +30,14 @@ void loop() {
   LEDController::updateFlightMode(G_flightMode); // Actualizar el estado del modo de vuelo en la tira LED
   LEDController::get_gps_status(ON, 200);
   LEDController::updateHeartbeat(MavLink_Connected);  // Connected or Not);
+  // Verificar si ha pasado más de 5 segundos desde la última comunicación
+  if (millis() - lastCommunicationTime > 5000) {
+    // Detener el parpadeo del LED (LED fijo)
+    LEDController::stopBlinking(0, 0);
+    }
+  else {
+ // Continuar el parpadeo del LED
+    LEDController::updateHeartbeat(MavLink_Connected);
+    }
+  
   }
