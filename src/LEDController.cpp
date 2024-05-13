@@ -3,23 +3,23 @@
 float dim = 100;  // variable global para dim
 CRGB LEDController::leds[NUM_ARMS][NUM_LEDS_PER_STRIP];
 
- uint8_t ap_sat_visible;  // Number of visible Satelites
- int state_GPS;
- int state_FLASH;
- unsigned long currentmillis;       // current milliseconds
- unsigned long lastmillis;          // milliseconds of last loop
- unsigned long targetmillis_FLASH;  // target milliseconds
- unsigned long targetmillis_GPS;
- uint8_t ap_fixtype;
+uint8_t ap_sat_visible;  // Number of visible Satelites
+int state_GPS;
+int state_FLASH;
+unsigned long currentmillis;       // current milliseconds
+unsigned long lastmillis;          // milliseconds of last loop
+unsigned long targetmillis_FLASH;  // target milliseconds
+unsigned long targetmillis_GPS;
+uint8_t ap_fixtype;
 
 
- bool isBlinking = false; // Variable de estado para indicar si el LED está parpadeando
- unsigned long previousMillis = 0; // Variable para almacenar el tiempo anterior del parpadeo
- int ledState = LOW; // Definición de la variable ledState
+bool isBlinking = false; // Variable de estado para indicar si el LED está parpadeando
+unsigned long previousMillis = 0; // Variable para almacenar el tiempo anterior del parpadeo
+int ledState = LOW; // Definición de la variable ledState
 
- 
- void LEDController::setup() {
-  // Configurar el número de LEDs y el tipo de tira LED APA102
+
+void LEDController::setup() {
+ // Configurar el número de LEDs y el tipo de tira LED APA102
 
   FastLED.addLeds<LEDTYPE, DATA_PIN, CLOCK_PIN, RGBORDER>(leds[0], 140); // wemos32
   FastLED.addLeds<LEDTYPE, DATA_PIN2, CLOCK_PIN2, RGBORDER>(leds[1], 140); // wemos32
@@ -297,6 +297,7 @@ void LEDController::stopBlinking(int row, int col) {
   isBlinking = false;
   // Lógica adicional si es necesario para asegurar que el LED esté apagado
   leds[0][0] = CRGB::Black;  //  cambiar detectando los leds de la funcion HB 
+  FastLED.show();
   }
 
 void LEDController::blinkLED(int row, int col, unsigned long onDuration, unsigned long offDuration) {
@@ -311,6 +312,7 @@ void LEDController::blinkLED(int row, int col, unsigned long onDuration, unsigne
 
       // Escribir el estado del LED
       leds[0][0] = (ledState == LOW) ? CRGB::Black : CRGB::White; //  cambiar detectando los leds de la funcion HB 
+      FastLED.show();
       }
     }
   }
