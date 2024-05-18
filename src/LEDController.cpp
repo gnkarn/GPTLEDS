@@ -309,7 +309,8 @@ void LEDController::blinkLED(int row, int col, unsigned long onDuration, unsigne
   if ((ledState == LOW && currentMillis - previousMillis >= offDuration) ||
     (ledState == HIGH && currentMillis - previousMillis >= onDuration)) {
     previousMillis = currentMillis;
-
+    Serial.print("isBlinking: ");
+    Serial.println(isBlinking);
     // Cambiar el estado del LED solo si está parpadeando
     if (isBlinking) {
       ledState = (ledState == LOW) ? HIGH : LOW;
