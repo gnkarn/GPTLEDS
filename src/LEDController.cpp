@@ -306,7 +306,8 @@ void LEDController::stopBlinking(int row, int col) {
 void LEDController::blinkLED(int row, int col, unsigned long onDuration, unsigned long offDuration) {
   unsigned long currentMillis = millis();
 
-  if (currentMillis - previousMillis >= (isBlinking ? (ledState == LOW ? offDuration : onDuration) : 0)) {
+  if ((ledState == LOW && currentMillis - previousMillis >= offDuration) ||
+    (ledState == HIGH && currentMillis - previousMillis >= onDuration)) {
     previousMillis = currentMillis;
 
     // Cambiar el estado del LED solo si está parpadeando
