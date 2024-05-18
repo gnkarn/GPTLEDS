@@ -32,7 +32,7 @@ void MavlinkHandler::receiveMessages() {
     lastCommunicationTime = millis();
     }
 
-  
+
     // Verificar si no se ha recibido ningún mensaje durante más de 5 segundos
   if (!messageReceived && millis() - lastCommunicationTime > 5000) {
     // Detener el parpadeo del LED
@@ -97,33 +97,38 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
     }
   }
 
+
 void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
 
   lastMessageTime = millis();
      // Actualizar la variable messageReceived cuando se recibe un mensaje
   MavlinkHandler::messageReceived = true;
-  static bool heartbeatState = false;
+
 
   if (messageReceived) {
-    heartbeatState = false;
+
     static unsigned long lastHeartbeatTime = 0;
     unsigned long currentTime = millis();
     if (currentTime - lastHeartbeatTime >= 500) {
+      static bool heartbeatState = false;
       heartbeatState = !heartbeatState;
       lastHeartbeatTime = currentTime;
       MavLink_Connected = heartbeatState; // Estas dos variables funcioinan igual , ver de eliminar una
-      }
-    if (heartbeatState) {
-      LEDController::setLED(0, 0, CRGB::White);// 
-      }
-    }
-  heartbeatState = false;//   ver
-  mavlink_heartbeat_t heartbeat;
-  mavlink_msg_heartbeat_decode(&message, &heartbeat);
-  // Aquí puedes actualizar la variable flightMode con el estado del modo de vuelo leído del mensaje heartbeat
-  G_flightMode = heartbeat.custom_mode;
-  }
 
+      if (heartbeatState) {
+        // LEDController::setLED(0, 0, CRGB::White);// 
+        }
+      else {
+                    // Apagar el LED si no está en estado de latido
+        LEDController::setLED(0, 0, CRGB::Black);
+        }
+      }
+    mavlink_heartbeat_t heartbeat;
+    mavlink_msg_heartbeat_decode(&message, &heartbeat);
+    // Aquí puedes actualizar la variable flightMode con el estado del modo de vuelo leído del mensaje heartbeat
+    G_flightMode = heartbeat.custom_mode;
+    }
+  }
 
 
 // **** MAVLINK Message #24 - GPS_RAW_INT ***
