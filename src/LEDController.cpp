@@ -286,7 +286,7 @@ void LEDController::startBlinking(int row, int col) {
   Serial.println("startBlinking called");
   if (!isBlinking) {
     isBlinking = true;
-    previousMillis = millis(); // Reiniciar el tiempo anterior del parpadeo
+    // previousMillis = millis(); // Reiniciar el tiempo anterior del parpadeo
     Serial.println("Blinking started");
     }
 
