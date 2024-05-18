@@ -51,9 +51,9 @@ void LEDController::updateHeartbeat(bool mavlinkConnected) {
   else {
     // Si no hay comunicación, detener el parpadeo del LED
     stopBlinking(0, 0);
+    Serial.print("StopBlinking: ");
+    Serial.println(mavlinkConnected);
 
-    //leds[0][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
-    //leds[1][0] = CRGB::Black; // Apagar LED 0 - Ala izquierda
     }
 
     // Mostrar los cambios en la tira LED
