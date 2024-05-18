@@ -306,6 +306,20 @@ void LEDController::stopBlinking(int row, int col) {
 void LEDController::blinkLED(int row, int col, unsigned long onDuration, unsigned long offDuration) {
   unsigned long currentMillis = millis();
 
+    // Mensajes de depuración para las variables clave
+  Serial.print("currentMillis: ");
+  Serial.println(currentMillis);
+  Serial.print("previousMillis: ");
+  Serial.println(previousMillis);
+  Serial.print("ledState: ");
+  Serial.println(ledState == LOW ? "LOW" : "HIGH");
+  Serial.print("offDuration: ");
+  Serial.println(offDuration);
+  Serial.print("onDuration: ");
+  Serial.println(onDuration);
+  Serial.print("isBlinking: ");
+  Serial.println(isBlinking);
+
   if ((ledState == LOW && currentMillis - previousMillis >= offDuration) ||
     (ledState == HIGH && currentMillis - previousMillis >= onDuration)) {
     previousMillis = currentMillis;
