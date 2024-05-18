@@ -113,7 +113,7 @@ void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
       static bool heartbeatState = false;
       heartbeatState = !heartbeatState;
       lastHeartbeatTime = currentTime;
-      MavLink_Connected = heartbeatState; // Estas dos variables funcioinan igual , ver de eliminar una
+      // MavLink_Connected = heartbeatState; // Estas dos variables funcioinan igual , ver de eliminar una
 
       if (heartbeatState) {
         // LEDController::setLED(0, 0, CRGB::White);// 
