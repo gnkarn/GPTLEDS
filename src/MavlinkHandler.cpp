@@ -109,7 +109,7 @@ void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
 
     static unsigned long lastHeartbeatTime = 0;
     unsigned long currentTime = millis();
-    if (currentTime - lastHeartbeatTime >= 500) {
+    if (currentTime - lastHeartbeatTime >= 5000) {
       static bool heartbeatState = false;
       heartbeatState = !heartbeatState;
       lastHeartbeatTime = currentTime;
