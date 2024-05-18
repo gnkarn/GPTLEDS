@@ -320,8 +320,8 @@ void LEDController::blinkLED(int row, int col, unsigned long onDuration, unsigne
   Serial.print("isBlinking: ");
   Serial.println(isBlinking);
 
-  if ((ledState == LOW && currentMillis - previousMillis >= offDuration) ||
-    (ledState == HIGH && currentMillis - previousMillis >= onDuration)) {
+  if ((ledState == LOW && ((currentMillis - previousMillis) >= offDuration)) ||
+    (ledState == HIGH && ((currentMillis - previousMillis) >= onDuration))) {
     previousMillis = currentMillis;
     Serial.print("isBlinking: ");
     Serial.println(isBlinking);
