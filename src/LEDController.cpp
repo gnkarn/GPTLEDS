@@ -283,14 +283,17 @@ void LEDController::get_gps_status(int STATUS, float dim) {
 
 void LEDController::startBlinking(int row, int col) {
   // Iniciar el parpadeo del LED si no está parpadeando
+  Serial.println("startBlinking called");
   if (!isBlinking) {
     isBlinking = true;
     previousMillis = millis(); // Reiniciar el tiempo anterior del parpadeo
+    Serial.println("Blinking started");
     }
 
     // Llamar a la función blinkLED para mantener el parpadeo
   blinkLED(row, col, 250, 750); // Parpadeo de 250 ms en ON y 750 ms en OFF
   }
+
 
 void LEDController::stopBlinking(int row, int col) {
   // Detener el parpadeo del LED
@@ -313,6 +316,8 @@ void LEDController::blinkLED(int row, int col, unsigned long onDuration, unsigne
       // Escribir el estado del LED
       leds[0][0] = (ledState == LOW) ? CRGB::Black : CRGB::White; //  cambiar detectando los leds de la funcion HB 
       FastLED.show();
+      Serial.print("LED state: ");
+      Serial.println(ledState == LOW ? "OFF" : "ON");
       }
     }
   }
