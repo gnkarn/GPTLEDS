@@ -83,7 +83,7 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         Serial.print(hb.mavlink_version);
 #endif
         break;
-      case MAVLINK_MSG_ID_GPS_STATUS:
+      case MAVLINK_MSG_ID_GPS_RAW_INT: //MAVLINK_MSG_ID_GPS_STATUS: // ( ver diferencia entre msg 24 y 25)
         processGPSStatus(message);
         break;
       case MAVLINK_MSG_ID_SYS_STATUS:

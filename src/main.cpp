@@ -41,7 +41,7 @@ void loop() {
     }
   else {
  // Continuar el parpadeo del LED
-    LEDController::updateHeartbeat(MavLink_Connected);
+   // LEDController::updateHeartbeat(MavLink_Connected);
     }
 
   }
