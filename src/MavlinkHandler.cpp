@@ -3,9 +3,9 @@
 #include "Mavlink_ino.h" // Incluir Mavlink_ino.h aquí
 
 #define MAVLINK_DEBUG
-
+#define DEBUG_APM_GPS_RAW
 int G_flightMode = MANUAL;
-
+#define debugSerial Serial
 
 
 
@@ -148,21 +148,22 @@ void MavlinkHandler::processGPSStatus(mavlink_message_t message) {
   bool has3DFix = (gpsRaw.fix_type == 3);
   // Actualizar los LEDs correspondientes para indicar si hay señal 3Dfix
   if (has3DFix) {
-    LEDController::setLED(0, 2, CRGB::Blue); // LED 2 - Ala izquierda
-    LEDController::setLED(1, 2, CRGB::Blue); // LED 2 - Ala derecha
+    // LEDController::setLED(0, 2, CRGB::Blue); // LED 2 - Ala izquierda
+    // LEDController::setLED(1, 2, CRGB::Blue); // LED 2 - Ala derecha
     }
   else {
-    LEDController::setLED(0, 2, CRGB::Black); // Apagar LED 2 - Ala izquierda
-    LEDController::setLED(1, 2, CRGB::Black); // Apagar LED 2 - Ala derecha
+    // LEDController::setLED(0, 2, CRGB::Black); // Apagar LED 2 - Ala izquierda
+    // LEDController::setLED(1, 2, CRGB::Black); // Apagar LED 2 - Ala derecha
     }
+  LEDController::get_gps_status(gpsRaw.fix_type, 200);
 #ifdef DEBUG_APM_GPS_RAW
   debugSerial.print(millis());
   debugSerial.print("\tMAVLINK_MSG_ID_GPS_RAW_INT: fixtype: ");
-  debugSerial.print(ap_fixtype);
+  debugSerial.println(ap_fixtype);
   debugSerial.print(", visiblesats: ");
-  debugSerial.print(ap_sat_visible);
+  debugSerial.println(ap_sat_visible);
   debugSerial.print(", status: ");
-  debugSerial.print(gps_status);
+  //debugSerial.println(gps_status);
   //debugSerial.print(", gpsspeed: ");
   //debugSerial.print(mavlink_msg_gps_raw_int_get_vel(&msg)/100.0);
   //debugSerial.print(", hdop: ");

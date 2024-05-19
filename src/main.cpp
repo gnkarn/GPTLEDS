@@ -14,6 +14,9 @@ bool MavLink_Connected = 0;
 bool test;
 unsigned long lastCommunicationTime = 0; // Variable para almacenar el tiempo de la última comunicación recibida
 
+
+
+
 void setup() {
   Serial.println("Setup de arduplane leds iniciado ");
   Serial.begin(115200);
