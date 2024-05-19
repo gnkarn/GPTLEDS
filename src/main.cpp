@@ -26,7 +26,7 @@ void setup() {
   Serial.print("Test leds");
   LEDController::Leds_Test();
   Serial.print("Fin de Setup , inicio de Loop");
-  delay(3000);
+  delay(1000);
   }
 
 void loop() {
@@ -38,8 +38,10 @@ void loop() {
   if (millis() - lastCommunicationTime > 5000) {
     // Detener el parpadeo del LED (LED fijo)
     LEDController::stopBlinking(0, 0);
+
     }
   else {
+    FastLED.delay(2);
  // Continuar el parpadeo del LED
    // LEDController::updateHeartbeat(MavLink_Connected);
     }
