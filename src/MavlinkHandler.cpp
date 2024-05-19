@@ -6,7 +6,7 @@
 #define DEBUG_APM_GPS_RAW
 int G_flightMode = MANUAL;
 #define debugSerial Serial
-
+int   gps_status = 0;    // (ap_sat_visible * 10) + ap_fixtype eg. 83 = 8 sattelites visible, 3D lock
 
 
 // Inicializar las variables estáticas en el ámbito de la clase
@@ -144,6 +144,7 @@ void MavlinkHandler::processGPSStatus(mavlink_message_t message) {
   // Verificar si hay una señal 3Dfix
   ap_fixtype = mavlink_msg_gps_raw_int_get_fix_type(&message);  // 0 = No GPS, 1 =No Fix, 2 = 2D Fix, 3 = 3D Fix, 4 = DGPS, 5 = RTK
   ap_sat_visible = mavlink_msg_gps_raw_int_get_satellites_visible(&message);          // numbers of visible satelites
+  gps_status = (ap_sat_visible * 10) + ap_fixtype;
 
   bool has3DFix = (gpsRaw.fix_type == 3);
   // Actualizar los LEDs correspondientes para indicar si hay señal 3Dfix
@@ -155,7 +156,7 @@ void MavlinkHandler::processGPSStatus(mavlink_message_t message) {
     // LEDController::setLED(0, 2, CRGB::Black); // Apagar LED 2 - Ala izquierda
     // LEDController::setLED(1, 2, CRGB::Black); // Apagar LED 2 - Ala derecha
     }
-  LEDController::get_gps_status(gpsRaw.fix_type, 200);
+  LEDController::get_gps_status(gps_status, 200);
 #ifdef DEBUG_APM_GPS_RAW
   debugSerial.print(millis());
   debugSerial.print("\tMAVLINK_MSG_ID_GPS_RAW_INT: fixtype: ");
@@ -163,7 +164,7 @@ void MavlinkHandler::processGPSStatus(mavlink_message_t message) {
   debugSerial.print(", visiblesats: ");
   debugSerial.println(ap_sat_visible);
   debugSerial.print(", status: ");
-  //debugSerial.println(gps_status);
+  debugSerial.println(gps_status);
   //debugSerial.print(", gpsspeed: ");
   //debugSerial.print(mavlink_msg_gps_raw_int_get_vel(&msg)/100.0);
   //debugSerial.print(", hdop: ");
@@ -181,25 +182,25 @@ void MavlinkHandler::processSysStatus(mavlink_message_t message) {
   bool isArmed = (heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED);
   // Actualizar los LEDs correspondientes para indicar si el sistema está ARMED o DESARMED
   if (isArmed) {
-    LEDController::setLED(0, 3, CRGB::Green);// LED 3 - Ala izquierda
-    LEDController::setLED(1, 3, CRGB::Green);// LED 3 - Ala derecha
+    LEDController::setLED(0, 5, CRGB::Green);// LED 3 - Ala izquierda
+    LEDController::setLED(1, 5, CRGB::Green);// LED 3 - Ala derecha
 
     }
   else {
-    LEDController::setLED(0, 3, CRGB::Red);// LED 3 - Ala izquierda
-    LEDController::setLED(1, 3, CRGB::Red);// LED 3 - Ala derecha
+    LEDController::setLED(0, 5, CRGB::Red);// LED 3 - Ala izquierda
+    LEDController::setLED(1, 5, CRGB::Red);// LED 3 - Ala derecha
     }
    // Si Mavlink está conectado, hacemos que el LED de heartbeat titile una vez por segundo
   if (messageReceived) {
     static bool heartbeatState = false;
     static unsigned long lastHeartbeatTime = 0;
     unsigned long currentTime = millis();
-    if (currentTime - lastHeartbeatTime >= 500) {
+    if (currentTime - lastHeartbeatTime >= 5000) {
       heartbeatState = !heartbeatState;
       lastHeartbeatTime = currentTime;
       }
     if (heartbeatState) {
-      LEDController::setLED(0, 0, CRGB::White);// 
+      // LEDController::setLED(0, 0, CRGB::White);// 
       }
     }
 
