@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 // #include <stdint.h>
-// Version 0.1
+// Version 0.2
 // 
 #include "MavlinkHandler.h"
 #include "LEDController.h"

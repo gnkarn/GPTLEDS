@@ -34,9 +34,11 @@ void MavlinkHandler::receiveMessages() {
 
 
     // Verificar si no se ha recibido ningún mensaje durante más de 5 segundos
-  if (!messageReceived && millis() - lastCommunicationTime > 5000) {
+  if (!messageReceived && millis() - lastCommunicationTime > TIMEOUT_MS) {
     // Detener el parpadeo del LED
     LEDController::stopBlinking(0, 0);
+    messageReceived = false;
+    MavLink_Connected = false;
     }
   }
 
@@ -91,10 +93,11 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
     }
   // Restablecer el estado de messageReceived después de un cierto tiempo sin recibir mensajes
 // Por ejemplo, si no se recibe ningún mensaje durante 1 segundo, se restablece messageReceived a false
-  if (millis() - lastMessageTime > TIMEOUT_MS) {
+/*  if (millis() - lastMessageTime > TIMEOUT_MS) {
     messageReceived = false;
     MavLink_Connected = false;
     }
+*/
   }
 
 
@@ -102,9 +105,9 @@ void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
 
   lastMessageTime = millis();
      // Actualizar la variable messageReceived cuando se recibe un mensaje
-  MavlinkHandler::messageReceived = true;
+  //MavlinkHandler::messageReceived = true;
 
-
+/*
   if (messageReceived) {
 
     static unsigned long lastHeartbeatTime = 0;
@@ -116,18 +119,19 @@ void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
       // MavLink_Connected = heartbeatState; // Estas dos variables funcioinan igual , ver de eliminar una
 
       if (heartbeatState) {
-        // LEDController::setLED(0, 0, CRGB::White);// 
+        // LEDController::setLED(0, 0, CRGB::White);//
         }
       else {
                     // Apagar el LED si no está en estado de latido
         LEDController::setLED(0, 0, CRGB::Black);
         }
       }
-    mavlink_heartbeat_t heartbeat;
-    mavlink_msg_heartbeat_decode(&message, &heartbeat);
-    // Aquí puedes actualizar la variable flightMode con el estado del modo de vuelo leído del mensaje heartbeat
-    G_flightMode = heartbeat.custom_mode;
-    }
+*/
+  mavlink_heartbeat_t heartbeat;
+  mavlink_msg_heartbeat_decode(&message, &heartbeat);
+  // Aquí puedes actualizar la variable flightMode con el estado del modo de vuelo leído del mensaje heartbeat
+  G_flightMode = heartbeat.custom_mode;
+  //}
   }
 
 
