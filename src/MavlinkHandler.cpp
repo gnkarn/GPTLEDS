@@ -52,7 +52,7 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         processHeartbeat(message);
             // Some more actions to execute to show loop() is running...
       // Non blocking LED toggler
-        if ((millis() % 2000) > 500) ledState = 1;
+        if ((millis() % 2000) > 200) ledState = 1;
         else                         ledState = 0;
         digitalWrite(LED_BUILTIN, ledState);
         Serial.print("LED_BUILTIN: ");
