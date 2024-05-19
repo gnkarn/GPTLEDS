@@ -55,7 +55,8 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         if ((millis() % 2000) > 500) ledState = 1;
         else                         ledState = 0;
         digitalWrite(LED_BUILTIN, ledState);
-
+        Serial.print("LED_BUILTIN: ");
+        Serial.println(ledState);
 #ifdef MAVLINK_DEBUG
         Serial.print("=HEARTBEAT");
         Serial.print(" Type:");
