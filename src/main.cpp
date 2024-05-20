@@ -32,7 +32,7 @@ void setup() {
 void loop() {
   MavlinkHandler::receiveMessages(); // Recibir mensajes MAVLink
   LEDController::updateFlightMode(G_flightMode); // Actualizar el estado del modo de vuelo en la tira LED
-  // LEDController::get_gps_status(gps_status, 200);  // (ap_sat_visible * 10) + ap_fixtype eg. 83 = 8 sattelites visible, 3D lock
+  LEDController::get_gps_status(gps_status, 200);  // (ap_sat_visible * 10) + ap_fixtype eg. 83 = 8 sattelites visible, 3D lock
   LEDController::updateHeartbeat(MavLink_Connected);  // Connected or Not);
   // Verificar si ha pasado más de 5 segundos desde la última comunicación
   if (millis() - lastCommunicationTime > 5000) {
