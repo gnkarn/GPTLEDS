@@ -13,6 +13,7 @@ unsigned long targetmillis_GPS;
 uint8_t ap_fixtype;
 
 
+
 bool isBlinking = false; // Variable de estado para indicar si el LED está parpadeando
 unsigned long previousMillis = 0; // Variable para almacenar el tiempo anterior del parpadeo
 int ledState = LOW; // Definición de la variable ledState

@@ -7,7 +7,11 @@
 int G_flightMode = MANUAL;
 #define debugSerial Serial
 int   gps_status = 0;    // (ap_sat_visible * 10) + ap_fixtype eg. 83 = 8 sattelites visible, 3D lock
-
+int32_t ap_latitude  ;
+int32_t ap_longitude; 
+int32_t ap_gps_altitude;
+int16_t ap_gps_speed;
+int16_t ap_cog;
 
 // Inicializar las variables estáticas en el ámbito de la clase
 bool MavlinkHandler::messageReceived = false;
@@ -150,11 +154,16 @@ void MavlinkHandler::processGPSStatus(mavlink_message_t message) {
   ap_sat_visible = mavlink_msg_gps_raw_int_get_satellites_visible(&message);          // numbers of visible satelites
   gps_status = (ap_sat_visible * 10) + ap_fixtype;
 
-  bool has3DFix = (gpsRaw.fix_type == 3);
+  bool has3DFix = (gpsRaw.fix_type >= 3);
   // Actualizar los LEDs correspondientes para indicar si hay señal 3Dfix
   if (has3DFix) {
     // LEDController::setLED(0, 2, CRGB::Blue); // LED 2 - Ala izquierda
     // LEDController::setLED(1, 2, CRGB::Blue); // LED 2 - Ala derecha
+    ap_latitude = mavlink_msg_gps_raw_int_get_lat(&message);
+    ap_longitude = mavlink_msg_gps_raw_int_get_lon(&message);
+    ap_gps_altitude = mavlink_msg_gps_raw_int_get_alt(&message);      // 1m = 1000
+    ap_gps_speed = mavlink_msg_gps_raw_int_get_vel(&message);         // 100 = 1m/s
+    ap_cog = mavlink_msg_gps_raw_int_get_cog(&message) / 100;
     }
   else {
     // LEDController::setLED(0, 2, CRGB::Black); // Apagar LED 2 - Ala izquierda
