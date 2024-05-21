@@ -2,7 +2,7 @@
 #include "LEDController.h"
 #include "Mavlink_ino.h" // Incluir Mavlink_ino.h aquí
 
-#define MAVLINK_DEBUG
+// #define MAVLINK_DEBUG
 #define DEBUG_APM_GPS_RAW
 int G_flightMode = MANUAL;
 #define debugSerial Serial
