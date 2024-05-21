@@ -151,7 +151,7 @@ void MavlinkHandler::processGPSStatus(mavlink_message_t message) {
   mavlink_msg_gps_raw_int_decode(&message, &gpsRaw);
   // Verificar si hay una señal 3Dfix
   ap_fixtype = mavlink_msg_gps_raw_int_get_fix_type(&message);  // 0 = No GPS, 1 =No Fix, 2 = 2D Fix, 3 = 3D Fix, 4 = DGPS, 5 = RTK
-  ap_sat_visible = mavlink_msg_gps_raw_int_get_satellites_visible(&message);          // numbers of visible satelites
+  ap_sat_visible = gpsRaw.satellites_visible; // mavlink_msg_gps_raw_int_get_satellites_visible(&message);          // numbers of visible satelites
   gps_status = (ap_sat_visible * 10) + ap_fixtype;
 
   bool has3DFix = (gpsRaw.fix_type >= 3);
