@@ -30,6 +30,7 @@ void MavlinkHandler::receiveMessages() {
     // Actualizar el tiempo de la última comunicación recibida
   if (messageReceived) {
     lastCommunicationTime = millis();
+    digitalWrite(LED_BUILTIN, 1);
     }
 
 
@@ -39,6 +40,7 @@ void MavlinkHandler::receiveMessages() {
     LEDController::stopBlinking(0, 0);
     messageReceived = false;
     MavLink_Connected = false;
+    digitalWrite(LED_BUILTIN, 0);
     }
   }
 
@@ -52,11 +54,13 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
         processHeartbeat(message);
             // Some more actions to execute to show loop() is running...
       // Non blocking LED toggler
+        /*
         if ((millis() % 2000) > 324) ledState = 1;
         else                         ledState = 0;
         digitalWrite(LED_BUILTIN, ledState);
         Serial.print("LED_BUILTIN: ");
         Serial.println(ledState);
+        */
 #ifdef MAVLINK_DEBUG
         Serial.print("=HEARTBEAT");
         Serial.print(" Type:");
