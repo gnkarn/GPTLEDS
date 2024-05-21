@@ -21,6 +21,7 @@ const unsigned long MavlinkHandler::TIMEOUT_MS = 5000; // Tiempo de espera prede
 unsigned long MavlinkHandler::lastCommunicationTime = 0; // Definición de la variable lastCommunicationTime
 
 void MavlinkHandler::receiveMessages() {
+  Serial.print("receiveMessages ");
   bool messageReceived = false; // Variable para indicar si se ha recibido un mensaje
   while (Serial2.available() > 0) {
     uint8_t byte = Serial2.read();
@@ -49,6 +50,7 @@ void MavlinkHandler::receiveMessages() {
   }
 
 void MavlinkHandler::decodeMessage(mavlink_message_t message) {
+  Serial.print("decodeMessage ");
   switch (message.msgid) {
       case MAVLINK_MSG_ID_HEARTBEAT: //  #0  https://mavlink.io/en/messages/common.html#HEARTBEAT
         mavlink_heartbeat_t hb;
@@ -111,7 +113,7 @@ void MavlinkHandler::decodeMessage(mavlink_message_t message) {
 
 
 void MavlinkHandler::processHeartbeat(mavlink_message_t message) {
-
+  Serial.print("decodeMessage ");
   lastMessageTime = millis();
      // Actualizar la variable messageReceived cuando se recibe un mensaje
   //MavlinkHandler::messageReceived = true;

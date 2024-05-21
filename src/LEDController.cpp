@@ -62,6 +62,7 @@ void LEDController::updateHeartbeat(bool mavlinkConnected) {
   }
 
 void LEDController::updateFlightMode(int flightMode) {
+  Serial.print("updateFlightMode  ");
   // Apagar todos los LEDs
   FastLED.clear();
 
