@@ -7,8 +7,8 @@
 int G_flightMode = MANUAL;
 #define debugSerial Serial
 int   gps_status = 0;    // (ap_sat_visible * 10) + ap_fixtype eg. 83 = 8 sattelites visible, 3D lock
-int32_t ap_latitude  ;
-int32_t ap_longitude; 
+int32_t ap_latitude;
+int32_t ap_longitude;
 int32_t ap_gps_altitude;
 int16_t ap_gps_speed;
 int16_t ap_cog;
@@ -159,11 +159,24 @@ void MavlinkHandler::processGPSStatus(mavlink_message_t message) {
   if (has3DFix) {
     // LEDController::setLED(0, 2, CRGB::Blue); // LED 2 - Ala izquierda
     // LEDController::setLED(1, 2, CRGB::Blue); // LED 2 - Ala derecha
-    ap_latitude = mavlink_msg_gps_raw_int_get_lat(&message);
-    ap_longitude = mavlink_msg_gps_raw_int_get_lon(&message);
-    ap_gps_altitude = mavlink_msg_gps_raw_int_get_alt(&message);      // 1m = 1000
-    ap_gps_speed = mavlink_msg_gps_raw_int_get_vel(&message);         // 100 = 1m/s
-    ap_cog = mavlink_msg_gps_raw_int_get_cog(&message) / 100;
+    ap_latitude = gpsRaw.lat; // mavlink_msg_gps_raw_int_get_lat(&message);
+    ap_longitude = gpsRaw.lon; //mavlink_msg_gps_raw_int_get_lon(&message);
+    ap_gps_altitude = gpsRaw.alt;//mavlink_msg_gps_raw_int_get_alt(&message);      // 1m = 1000
+    ap_gps_speed = gpsRaw.vel;//mavlink_msg_gps_raw_int_get_vel(&message);         // 100 = 1m/s
+    ap_cog = gpsRaw.cog; // mavlink_msg_gps_raw_int_get_cog(&message) / 100;
+/*
+    uint64_t time_usec; ///< Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+    int32_t lat; ///< Latitude (WGS84), in degrees * 1E7
+    int32_t lon; ///< Longitude (WGS84), in degrees * 1E7
+    int32_t alt; ///< Altitude (AMSL, NOT WGS84), in meters * 1000 (positive for up). Note that virtually all GPS modules provide the AMSL altitude in addition to the WGS84 altitude.
+    uint16_t eph; ///< GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: UINT16_MAX
+    uint16_t epv; ///< GPS VDOP vertical dilution of position in cm (m*100). If unknown, set to: UINT16_MAX
+    uint16_t vel; ///< GPS ground speed (m/s * 100). If unknown, set to: UINT16_MAX
+    uint16_t cog; ///< Course over ground (NOT heading, but direction of movement) in degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX
+    uint8_t fix_type; ///< 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS, 5: RTK. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
+    uint8_t satellites_visible; ///< Number of satellites visible. If unknown, set to 255
+    } mavlink_gps_raw_int_t;
+  */
     }
   else {
     // LEDController::setLED(0, 2, CRGB::Black); // Apagar LED 2 - Ala izquierda
