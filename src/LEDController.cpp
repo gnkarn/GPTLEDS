@@ -181,25 +181,25 @@ void LEDController::blinkLED() {
 void LEDController::Leds_Test(void) {
   Serial.println("Leds_Test apagaTodo");
   for (uint8_t i = 0;i < NUM_ARMS;i++) {
-    for (uint8_t j = 0; j < NUM_LEDS_PER_ARM; j++) {
+    for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CHSV(0, 0, 0);
       FastLED.show();
 
       }
     yield();
-    for (uint8_t j = 0; j < NUM_LEDS_PER_ARM; j++) {
+    for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CHSV(0, 20, j);
       FastLED.show();
       FastLED.delay(5);
       }
     yield();
-    for (uint8_t j = 0; j < NUM_LEDS_PER_ARM; j++) {
+    for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CHSV(j, 50, 10);
       FastLED.show();
       FastLED.delay(5);
       }
     yield();
-    for (uint8_t j = 0; j < NUM_LEDS_PER_ARM; j++) {
+    for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CRGB(j, 0, 0);
       FastLED.show();
       FastLED.delay(5);
