@@ -181,25 +181,25 @@ void LEDController::blinkLED() {
 void LEDController::Leds_Test(void) {
   Serial.println("Leds_Test apagaTodo");
   for (uint8_t i = 0;i < NUM_ARMS;i++) {
-    for (uint8_t j = 0; j < 140; j++) {
+    for (uint8_t j = 0; j < NUM_LEDS_PER_ARM; j++) {
       leds[i][j] = CHSV(0, 0, 0);
       FastLED.show();
 
       }
     yield();
-    for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+    for (uint8_t j = 0; j < NUM_LEDS_PER_ARM; j++) {
       leds[i][j] = CHSV(0, 20, j);
       FastLED.show();
       FastLED.delay(5);
       }
     yield();
-    for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+    for (uint8_t j = 0; j < NUM_LEDS_PER_ARM; j++) {
       leds[i][j] = CHSV(j, 50, 10);
       FastLED.show();
       FastLED.delay(5);
       }
     yield();
-    for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+    for (uint8_t j = 0; j < NUM_LEDS_PER_ARM; j++) {
       leds[i][j] = CRGB(j, 0, 0);
       FastLED.show();
       FastLED.delay(5);
@@ -218,7 +218,7 @@ void LEDController::get_gps_status(int STATUS, float dim) {
    *  ap_sat_visible  => numbers of visible satellites
    *  ap_fixtype    => 0 = No GPS, 1 = No Fix, 2 = 2D Fix, 3 = 3D Fix
    */
-    Serial.print("Inicio Get_gps_status  ");
+  Serial.print("Inicio Get_gps_status  ");
   CRGB COLOR;
   int FREQ;
   if (STATUS == 1) {
@@ -253,7 +253,7 @@ void LEDController::get_gps_status(int STATUS, float dim) {
     if (currentmillis >= targetmillis_GPS) {
       if (state_GPS == 0) {
         for (int i = 0; i < NUM_ARMS; i++) {
-          for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+          for (int j = 0; j < NUM_LEDS_PER_ARM; j++) {
             if (LED_DEF[i][j] == GPS) {
               leds[i][j] = COLOR;
               }
@@ -263,7 +263,7 @@ void LEDController::get_gps_status(int STATUS, float dim) {
         }
       else {
         for (int i = 0; i < NUM_ARMS; i++) {
-          for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+          for (int j = 0; j < NUM_LEDS_PER_ARM; j++) {
             if (LED_DEF[i][j] == GPS) {
               leds[i][j] = CHSV(0, 0, 0);
               }
@@ -276,14 +276,14 @@ void LEDController::get_gps_status(int STATUS, float dim) {
     }
   else {
     for (int i = 0; i < NUM_ARMS; i++) {
-      for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+      for (int j = 0; j < NUM_LEDS_PER_ARM; j++) {
         if (LED_DEF[i][j] == GPS) {
           leds[i][j] = CHSV(0, 0, 0);
           }
         }
       }
     }
-      Serial.println("FIN Get_gps_status  ");
+  Serial.println("FIN Get_gps_status  ");
   }
 
 
