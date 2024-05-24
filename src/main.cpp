@@ -20,17 +20,18 @@ extern int   gps_status;
 void setup() {
   Serial.println("Setup de arduplane leds iniciado ");
   Serial.begin(115200);
-  Serial2.begin(57600, SERIAL_8N1, RXD2, TXD2);   // Initialise Serial2 port at 57600bps
+  Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2);   // Initialise Serial2 port at 57600bps
   pinMode(LED_BUILTIN, OUTPUT);
   LEDController::setup(); // Inicializar la tira LED APA102
   Serial.print("Test leds");
   LEDController::Leds_Test();
   Serial.print("Fin de Setup , inicio de Loop");
-  delay(1000);
+  delay(10);
   }
 
 void loop() {
   MavlinkHandler::receiveMessages(); // Recibir mensajes MAVLink
+  delay(10);
   LEDController::updateFlightMode(G_flightMode); // Actualizar el estado del modo de vuelo en la tira LED
   LEDController::get_gps_status(gps_status, 200);  // (ap_sat_visible * 10) + ap_fixtype eg. 83 = 8 sattelites visible, 3D lock
   LEDController::updateHeartbeat(MavLink_Connected);  // Connected or Not);
