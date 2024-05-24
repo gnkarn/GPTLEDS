@@ -81,6 +81,7 @@ void LEDController::updateFlightMode(int flightMode) {
         leds[1][3] = CRGB::Green; // Modo RTL - Ala derecha
         break;
       // Agregar más casos según sea necesario para otros modos de vuelo
+        Serial.println("FIN updateFlightMode  ");
     }
 
     // Mostrar los cambios en la tira LED
@@ -217,7 +218,7 @@ void LEDController::get_gps_status(int STATUS, float dim) {
    *  ap_sat_visible  => numbers of visible satellites
    *  ap_fixtype    => 0 = No GPS, 1 = No Fix, 2 = 2D Fix, 3 = 3D Fix
    */
-
+    Serial.print("Inicio Get_gps_status  ");
   CRGB COLOR;
   int FREQ;
   if (STATUS == 1) {
@@ -282,6 +283,7 @@ void LEDController::get_gps_status(int STATUS, float dim) {
         }
       }
     }
+      Serial.println("FIN Get_gps_status  ");
   }
 
 
