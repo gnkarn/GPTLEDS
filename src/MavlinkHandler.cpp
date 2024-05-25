@@ -24,6 +24,7 @@ void MavlinkHandler::receiveMessages() {
   Serial.print("receiveMessages ");
   bool messageReceived = false; // Variable para indicar si se ha recibido un mensaje
   while (Serial2.available() > 0) {
+    Serial.print(".");
     uint8_t byte = Serial2.read();
     mavlink_message_t message;
     mavlink_status_t status;
