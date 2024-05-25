@@ -91,7 +91,7 @@ class LEDController {
   static void Leds_Test(void);
   static void blinkLED();
   static void get_gps_status(int STATUS, float dim);
-  
+
   static void startBlinking(int row, int col); // Declaración de la función startBlinking
   static void stopBlinking(int row, int col); // Declaración de la función stopBlinking
   static void blinkLED(int row, int col, unsigned long onDuration, unsigned long offDuration); // Declaración de la función blinkLED

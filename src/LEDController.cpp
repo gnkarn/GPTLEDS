@@ -186,19 +186,16 @@ void LEDController::Leds_Test(void) {
       FastLED.show();
 
       }
-    yield();
     for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CHSV(0, 20, j);
       FastLED.show();
       FastLED.delay(5);
       }
-    yield();
     for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CHSV(j, 50, 10);
       FastLED.show();
       FastLED.delay(5);
       }
-    yield();
     for (uint8_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
       leds[i][j] = CRGB(j, 0, 0);
       FastLED.show();
